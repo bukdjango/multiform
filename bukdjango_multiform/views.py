@@ -17,7 +17,7 @@ class NewMultiForm(type):
                     v['class'].__name__,
                     (v['class'],),
                     {field_name: forms.CharField(
-                        widget=forms.TextInput(),
+                        widget=forms.HiddenInput(),
                         initial=k,
                     )}
                 )
