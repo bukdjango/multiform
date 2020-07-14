@@ -24,6 +24,7 @@ class NewMultiForm(type):
 
 
 class MultiFormView(TemplateView, metaclass=NewMultiForm):
+class MultiFormMixin(metaclass=NewMultiForm):
 
     multiforms = {}
     multiform_field_name = 'formtype'
@@ -71,6 +72,9 @@ class MultiFormView(TemplateView, metaclass=NewMultiForm):
         if func := getattr(self, self.kwargs_getattr(name), None):
             kwargs.update(func(**kwargs))
         return kwargs
+
+
+class MultiFormTemplateView(MultiFormMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

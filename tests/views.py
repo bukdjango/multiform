@@ -1,11 +1,11 @@
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
-from bukdjango_multiform.views import MultiFormView
+from bukdjango_multiform.views import MultiFormTemplateView
 from .forms import Form1, Form2
 
 
-class MyMultiFormView1(MultiFormView):
+class MyMultiFormTemplateView1(MultiFormTemplateView):
     template_name = 'index.html'
     multiform_field_name = 'zxc'
     multiforms = {
@@ -26,7 +26,7 @@ class MyMultiFormView1(MultiFormView):
         return {}
 
 
-class MyMultiFormView2(MultiFormView):
+class MyMultiFormTemplateView2(MultiFormTemplateView):
     template_name = 'index.html'
     multiforms = {
         'form2_ctx': {
