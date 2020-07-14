@@ -23,7 +23,6 @@ class NewMultiForm(type):
                 )
 
 
-class MultiFormView(TemplateView, metaclass=NewMultiForm):
 class MultiFormMixin(metaclass=NewMultiForm):
 
     multiforms = {}
