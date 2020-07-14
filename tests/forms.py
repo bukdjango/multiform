@@ -13,10 +13,11 @@ class Form1(forms.Form):
     def clean_field1(self):
         if '1' not in self.cleaned_data['field1']:
             raise forms.ValidationError(
-                'Error!'
+                'Error! Wrong Value!'
             )
 
 
 class Form2(forms.Form):
-    field1 = forms.CharField(widget=forms.TextInput())
-    field2 = forms.CharField(widget=forms.TextInput())
+    field1 = forms.CharField(widget=forms.TextInput(), required=True)
+    field2 = forms.CharField(widget=forms.TextInput(), required=True)
+
