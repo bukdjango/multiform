@@ -1,6 +1,10 @@
 from django import forms
 
 
+class FormSavedException(Exception):
+    pass
+
+
 class Form1(forms.Form):
     field1 = forms.CharField(widget=forms.TextInput())
     field2 = forms.CharField(widget=forms.TextInput())
@@ -16,8 +20,15 @@ class Form1(forms.Form):
                 'Error! Wrong Value!'
             )
 
+    def save(self):
+        raise FormSavedException()
+
 
 class Form2(forms.Form):
     field1 = forms.CharField(widget=forms.TextInput(), required=True)
     field2 = forms.CharField(widget=forms.TextInput(), required=True)
+
+    def save(self):
+        raise FormSavedException()
+
 

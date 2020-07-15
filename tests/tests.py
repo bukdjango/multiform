@@ -1,7 +1,118 @@
-from django.test import TestCase, Client
+from django.test import TestCase
+from .forms import FormSavedException
+from .views import MyMultiFormTemplateView4, MyMultiFormTemplateView3
 
 
 class AppTestCase(TestCase):
+
+    def test_save(self):
+        with self.assertRaises(FormSavedException) as err:
+            r = self.client.post(
+                '/decoratorview2/6',
+                data={
+                    'field1': '1',
+                    'field2': 'a',
+                    'formtype': 'form1_ctx'
+                }
+            )
+
+    def test_checks(self):
+        r = self.client.post(
+            '/decoratorview/1',
+            data={
+                'field1': '1',
+                'field2': 'a',
+                'formtype': 'form1_ctx'
+            }
+        )
+        self.assertEqual(
+            r.status_code, 403
+        )
+        self.assertEqual(
+            b'loginplease', r.content,
+        )
+
+    def test_checks2(self):
+        r = self.client.post(
+            '/decoratorview2/5',
+            data={
+                'field1': '1',
+                'field2': 'a',
+                'formtype': 'form1_ctx'
+            }
+        )
+        self.assertEqual(
+            r.status_code, 408
+        )
+        self.assertNotEqual(
+            b'loginplease', r.content,
+        )
+
+    def test_multiclass_post(self):
+        r = self.client.post(
+            '/view4/5',
+            data={
+                'field1': '1',
+                'field2': 'a',
+                'zxc': 'form4_ctx'
+            }
+        )
+        self.assertEqual(
+            r.status_code, 200
+        )
+
+        r = self.client.post(
+            '/view4/5',
+            data={
+                'field1': '1',
+                'field2': 'a',
+                'zxc': 'form2_ctx'
+            }
+        )
+        self.assertEqual(
+            r.status_code, 400
+        )
+
+        r = self.client.post(
+            '/view4/5',
+            data={
+                'field1': '1',
+                'field2': 'a',
+                'zxc': 'form1_ctx'
+            }
+        )
+        self.assertEqual(
+            r.status_code, 200
+        )
+
+    def test_multiclass(self):
+
+        view = MyMultiFormTemplateView3()
+        desired = {
+            'form3_ctx': {
+            },
+            'form1_ctx': {
+            },
+            'form2_ctx': {
+            },
+        }
+        self.assertEqual(
+            view.multiforms.keys(),
+            desired.keys(),
+        )
+
+        view = MyMultiFormTemplateView4()
+        print(view.multiforms)
+        desired = {
+            'form1_ctx': {
+            },
+            'form4_ctx': {
+            },
+        }
+        self.assertEqual(
+            view.multiforms.keys(),
+            desired.keys(),
+        )
 
     def test_render_1(self):
         r = self.client.get('/')

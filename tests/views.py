@@ -1,5 +1,4 @@
-from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.http import HttpResponse, HttpResponseForbidden
 
 from bukdjango_multiform.views import MultiFormTemplateView
 from .forms import Form1, Form2
@@ -55,3 +54,83 @@ class MyMultiFormTemplateView2(MultiFormTemplateView):
 
     def handle_invalid_form1_ctx(self, form):
         return HttpResponse(b'INVALID!form1_ctx')
+
+
+class MyMultiFormTemplateView3(MyMultiFormTemplateView1):
+    template_name = 'index.html'
+    multiforms = {
+        'form3_ctx': {
+            'class': Form2,
+        },
+    }
+
+
+class MyMultiFormTemplateView4(MyMultiFormTemplateView1):
+    template_name = 'index.html'
+    multiforms = {
+        'form4_ctx': {
+            'class': Form2,
+        },
+        'form2_ctx': None,
+    }
+
+
+def logged_in(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return HttpResponseForbidden(b'loginplease')
+
+
+def thats408(request, *args, **kwargs):
+    return HttpResponse(status=408)
+
+
+def thatsok(request, *args, **kwargs):
+    pass
+
+
+class DecoratorFormTemplateView(MultiFormTemplateView):
+
+    template_name = 'index.html'
+    multiforms = {
+        'form1_ctx': {
+            'class': Form1,
+            'attrs': ('request',),
+            'kwargs': ('some_kwarg',),
+            'checks': (logged_in,)
+        }
+    }
+
+
+class DecoratorFormTemplateView2(MultiFormTemplateView):
+
+    template_name = 'index.html'
+    multiforms = {
+        'form1_ctx': {
+            'class': Form1,
+            'attrs': ('request',),
+            'kwargs': ('some_kwarg',),
+            'checks': (thatsok, thats408, logged_in,),
+        }
+    }
+
+
+class DecoratorFormTemplateView3(MultiFormTemplateView):
+
+    template_name = 'index.html'
+    multiforms = {
+        'form1_ctx': {
+            'class': Form1,
+            'attrs': ('request',),
+            'kwargs': ('some_kwarg',),
+            'save': True,
+        },
+        'form2_ctx': {
+            'class': Form1,
+            'attrs': ('request',),
+            'kwargs': ('some_kwarg',),
+            'save': True,
+        },
+        'form3_ctx': {
+            'class': Form2,
+        },
+    }
