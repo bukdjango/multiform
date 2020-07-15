@@ -8,7 +8,7 @@ class AppTestCase(TestCase):
     def test_save(self):
         with self.assertRaises(FormSavedException) as err:
             r = self.client.post(
-                '/decoratorview2/6',
+                '/decoratorview3/6',
                 data={
                     'field1': '1',
                     'field2': 'a',

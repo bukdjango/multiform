@@ -8,5 +8,6 @@ urlpatterns = [
     path('test', MyMultiFormTemplateView2.as_view()),
     path('view4/<int:some_kwarg>', MyMultiFormTemplateView4.as_view()),
     path('decoratorview/<int:some_kwarg>', DecoratorFormTemplateView.as_view()),
-    path('decoratorview2/<int:some_kwarg>', DecoratorFormTemplateView3.as_view())
+    path('decoratorview2/<int:some_kwarg>', DecoratorFormTemplateView2.as_view()),
+    path('decoratorview3/<int:some_kwarg>', DecoratorFormTemplateView3.as_view())
 ]
