@@ -9,5 +9,5 @@ setup(
     include_package_data=True,
     packages=[APP_NAME],
     python_requires=">=3.8",
-    install_requires=[x for x in open('requirements.txt', 'r').readlines()],
+    install_requires=["django>=3.0.8"],
 )
